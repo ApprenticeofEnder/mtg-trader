@@ -8,6 +8,19 @@
   projectName = "mtg-trader";
   template = "svelte"; # used during tauri init
   manifestPath = "${config.git.root}/${projectName}/src-tauri/Cargo.toml";
+  libraries = with pkgs; [
+    webkitgtk_4_1
+    gtk3
+    cairo
+    gdk-pixbuf
+    glib.out
+    dbus.lib
+
+    # added this for https://github.com/tauri-apps/tauri/issues/4930
+    libthai
+  ];
+  joinLibs = libs: builtins.concatStringsSep ":" (builtins.map (x: "${x}/lib") libs);
+  libs = joinLibs libraries;
 in {
   env = {
     GREETING = "Welcome to the ${projectName} devenv!";
@@ -21,6 +34,12 @@ in {
   # https://devenv.sh/packages/
   packages = with pkgs; [
     git
+    xapp # Needed this little bastard
+    gtk3
+    glib
+    dbus
+    pkg-config
+    libsoup_3
     webkitgtk_4_1
     nixgl.auto.nixGLDefault
   ];
@@ -54,6 +73,9 @@ in {
     #     cargo build
     #   '';
     # };
+    tauri-info = {
+      exec = "bun run tauri info";
+    };
     run = {
       exec = ''
         nixGL bun run tauri dev
@@ -62,6 +84,7 @@ in {
   };
 
   enterShell = ''
+    export LD_LIBRARY_PATH=${libs}:$LD_LIBRARY_PATH
     hello
     rustc --version
     echo "bun $(bun --version)"
