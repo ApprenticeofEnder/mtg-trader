@@ -34,13 +34,20 @@ in {
   # https://devenv.sh/packages/
   packages = with pkgs; [
     git
-    xapp # Needed this little bastard
+    xapp
     gtk3
     glib
     dbus
-    pkg-config
+    pango
+    librsvg
+    openssl
     libsoup_3
+    pkg-config
     webkitgtk_4_1
+
+    atkmm
+    harfbuzz
+    at-spi2-atk
     nixgl.auto.nixGLDefault
   ];
 
