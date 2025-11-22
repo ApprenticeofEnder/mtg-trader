@@ -6,7 +6,7 @@
   ...
 }: let
   projectName = "mtg-trader";
-  template = "svelte";
+  template = "svelte"; # used during tauri init
   manifestPath = "${config.git.root}/${projectName}/src-tauri/Cargo.toml";
 in {
   env = {
