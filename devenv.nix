@@ -78,7 +78,8 @@ in {
     };
     run = {
       exec = ''
-        nixGL bun run tauri dev
+        cd ${config.git.root}/${projectName}
+        bun run tauri dev
       '';
     };
   };
